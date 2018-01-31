@@ -5,7 +5,6 @@ import {NEMHelpers} from '../../core/models/NEMHelpers';
 import { PaymentModel } from './PaymentModel';
 
 export class SupernodeModel {
-    
 
     public data:any;
 

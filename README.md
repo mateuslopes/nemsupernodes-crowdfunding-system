@@ -1,7 +1,7 @@
 # NEM SuperNode CrowdFunding System
 
 This system is an autonomous NEM account that manages the crowdfunding of NEM supernodes.
-This project was made for tha NEM Global Hackaton 2018.
+This project was made for the NEM Global Hackaton 2018.
 
 ## Interacting with the system
 

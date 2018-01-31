@@ -28,7 +28,7 @@ export class NISClass {
 
     constructor() {
         if(NISClass._instance){
-            throw new Error("Error: Instantiation failed: Use SingletonDemo.getInstance() instead of new.");
+            throw new Error("Error: Instantiation failed: Use NISClass.getInstance() instead of new.");
         }
         NISClass._instance = this;
     }

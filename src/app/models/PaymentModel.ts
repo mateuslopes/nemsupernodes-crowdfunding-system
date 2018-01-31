@@ -205,8 +205,6 @@ export class PaymentModel {
     public filterAnnouncedTransactions(txs):any[] {
         let announcedHash = this.announcedHash;
         if (!announcedHash) return [];
-        // console.log("txs", txs);
-        // process.exit();
         return txs.filter( tx => {
             let info = tx.getTransactionInfo();
             return (

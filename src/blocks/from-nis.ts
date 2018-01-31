@@ -1,5 +1,5 @@
 /*
-This script fetches blocks from nis using command line arguments
+This script fetches blocks from NIS using command line arguments
 --prev --first --last --next
 -b [block number] | --block [block number]
 */

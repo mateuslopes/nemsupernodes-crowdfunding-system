@@ -1,44 +1,6 @@
 export class NEMMosaicDefinitionModel {
     public data:any;
     
-    /*
-
-    {
-        "creator" : {
-            "address" : {
-                "value" : "TA6QD2BU4FTM7ZZKCXY6OUZWZZ7MFRUYAAIIQKSY",
-                "networkType" : 152
-            },
-            "publicKey" : "0afb935c49484cd1d416142d15ee7c22d004e360c022a267e53422d878daafad"
-        },
-        "id" : {
-            "namespaceId" : "nembr.sncf",
-            "name" : "xsn2"
-        },
-        "description" : "The XSN (XEM Super Node) token is always paired to XEM value, that means 1 XSN = 1 XEM, as these tokens represents XEMs that are being hold by SuperNode accounts.",
-        "properties" : {
-            "initialSupply" : 33000,
-            "supplyMutable" : true,
-            "transferable" : true,
-            "divisibility" : 6
-        },
-        "levy" : {
-            "type" : 2,
-            "recipient" : {
-                "value" : "TATXXO52M6335SB6O5N57ZLSHW6QK7LSGNPNCL5H",
-                "networkType" : 152
-            },
-            "mosaicId" : {
-                "namespaceId" : "nem",
-                "name" : "xem"
-            },
-            "fee" : 10
-        },
-        "metaId" : 1319
-    }
-     
-     */
-
     constructor(data){
         this.data = data;
     }

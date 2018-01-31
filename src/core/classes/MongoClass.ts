@@ -5,7 +5,6 @@ export class MongoClass {
  
     private static _instance:MongoClass = new MongoClass();
  
-    // private _score:number = 0;
     private _config = require('../../app/config').mongo;
     private _nis = require('../niswrap');
     private _client = require('mongodb').MongoClient;
@@ -17,7 +16,7 @@ export class MongoClass {
  
     constructor() {
         if(MongoClass._instance){
-            throw new Error("Error: Instantiation failed: Use SingletonDemo.getInstance() instead of new.");
+            throw new Error("Error: Instantiation failed: Use MongoClass.getInstance() instead of new.");
         }
         MongoClass._instance = this;
     }

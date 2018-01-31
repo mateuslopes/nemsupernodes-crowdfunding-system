@@ -1,6 +1,6 @@
 /*
 This script finds all the missing blocks in the range of the network blocks_service limits
-and inserts into blocks_missing collection to be processed by blocks-missing-fix
+and inserts into blocks_missing collection to be processed by blocks-missing-fix script
 */
 // var nis = require('../core/niswrap');
 var mongo = require('../core/mongowrap');

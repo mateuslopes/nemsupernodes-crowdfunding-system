@@ -73,6 +73,8 @@ export class NEMFees {
         return (fee >= 1.20) ? 1.20 : fee;
     }
 
+
+    // Hardcoded - No time to find a better solution
     public static hexaFees(message:string):number {
         var l = message.length;
         if (l == 0) return 0;

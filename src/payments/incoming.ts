@@ -54,9 +54,9 @@ mongo.connect(function(err, client) {
         return;
       }
 
-          console.log("SUPERNODE ACCOUNT", supernode.address);
+      console.log("SUPERNODE ACCOUNT", supernode.nodeId, supernode.address);
 
-          // for each block with transactions
+      // for each block with transactions
       result.forEach( blkData => {
 
         let block = new NEMBlockModel(blkData);
@@ -125,7 +125,7 @@ mongo.connect(function(err, client) {
                 console.log("Representative claiming removed: ", pay.tx.signer);
               }
 
-              // TODO: remove email
+              // remove account email
               else if (["email:out","email:optout","optout","opt-out","email:opt-out"].indexOf(message) > -1){
                 supernode.removeAccountEmail(pay.tx.signer);
                 console.log("Account e-mail removed: ", pay.tx.signer);
@@ -141,23 +141,6 @@ mongo.connect(function(err, client) {
 
             // adds signer and email on supernode
             supernode.addAccount(pay.tx.signer, email);
-
-            //
-            if (debug){
-              console.log("====================");
-              console.log("DATETIME: ", tx.timestamp);
-              console.log("ISSUER: ", tx.issuer);
-              console.log("SIGNER: ", tx.signer);
-              console.log("TO: ", tx.recipient.value);
-              console.log("XEM AMOUNT: ", tx._xem.amount);
-              console.log("TX FEE: ", tx.fee);
-              console.log("MULTISIGN FEE: ", tx.multisignFee);
-              console.log("TOTAL FEE: ", tx.totalFee);
-              console.log("DEADLINE: ", tx.deadline);
-              console.log("====================");
-              console.log(pay.data);
-              console.log("====================");
-            }
             
           });
 

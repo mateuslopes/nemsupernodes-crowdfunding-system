@@ -1,7 +1,7 @@
 var config = {
     network: 'testnet',
     supernode: {
-        active: 'sn1'
+        active: 'nodeId1'
     },
     nis: {
         enabled: false,
