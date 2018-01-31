@@ -1,0 +1,7 @@
+#!/bin/env bash
+# runs the chain script every period
+while [ true ]; 
+do
+ node ../dist/blocks/missing-fix.js
+ sleep 10
+done

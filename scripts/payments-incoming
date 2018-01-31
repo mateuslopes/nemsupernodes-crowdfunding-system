@@ -1,0 +1,7 @@
+#!/bin/env bash
+# runs the chain script every 30 seconds
+while [ true ]; 
+do
+ node ../dist/payments/incoming.js
+ sleep 20
+done
