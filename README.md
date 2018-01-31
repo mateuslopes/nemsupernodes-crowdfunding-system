@@ -19,6 +19,7 @@ Access [NEM Supernodes Crowdfunding](http://nemsupernodes.com) website to use th
 5. Run: tsc
 6. Run: npm run mongo-install
 7. Open your mongo blocks_service collection and set block.first and block.last to the same block number you want to start tracking
+9. Create a multisigned account to serve as your supernode account, do some transactions to get a public key.
 8. Open your mongo supernodes collection and set all variables of your supernode account
 
 ## Running the services
@@ -35,4 +36,10 @@ Analyses new blocks searching for incoming transactions for the supernode accoun
 Announces each payment to the supernode account, splits transactions if needed, control balances, locks and unlocks supernodes accounts.
 
 ### bash payments-confirmations
-Confirms outgoing payments that were waiting to be signed.
+Confirms outgoing payments that were waiting to be signed
+
+### TODO: bash map-accounts-xsn
+Map all the accounts holding XSN to distribute profits and for community representative decision.
+
+### TODO: bash payments-profits-distribution
+Sends profits distribution payments to all XSN holders
