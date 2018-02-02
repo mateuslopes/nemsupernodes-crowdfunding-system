@@ -34,8 +34,8 @@ mongo.connect(function(err, client) {
             "dt_upd" : new Date(),
             "nodeId" : "sn1",
             "name" : "SuperNode1",
-            "address" : "TATXXO52M6335SB6O5N57ZLSHW6QK7LSGNPNCL5H", // the supernode multisign account
-            "publicKey" : "31d068107b0ebe56aa3345968675391f978bb16d875a805c503b5f1ec0807574",
+            "address" : "", // the supernode multisign account
+            "publicKey" : "",
             "privateKey" : "",
             "status":{
                 "value": "ACTIVE", // ACTIVE | INACTIVE | UNLOCKED | LOCKED
@@ -50,16 +50,15 @@ mongo.connect(function(err, client) {
             },
             "signers" : {
                 "minimumSignatures" : 1,
-                "app" : "", // app wallet address
-                "nem" : "", // NEM wallet address
-                "admin" : "" // admin wallet address
+                "org" : "",
+                "app" : "",
+                "nem" : "",
+                "admin" : ""
             },
             "incoming" : {
                 "lastBlock" : 1294164,
                 // authorized account to send deposits to the supernode, without receiveing anything back
-                "authorizedAccounts" : [ 
-                    "" //  wallet addresses
-                ]
+                "authorizedAccounts" : []
             },
             "outgoing" : {
                 "lastBlock" : 1292666
@@ -81,12 +80,12 @@ mongo.connect(function(err, client) {
                         "publicKey" : ""
                     },
                     "id" : {
-                        "namespaceId" : "nembr.sncf",
-                        "name" : "xsn2"
+                        "namespaceId" : "nemsupernodes.xsn",
+                        "name" : "supernodeName"
                     },
                     "description" : "The XSN (XEM Super Node) token is always paired to XEM value, that means 1 XSN = 1 XEM, as these tokens represents XEMs that are being hold by SuperNode accounts.",
                     "properties" : {
-                        "initialSupply" : 3300000,
+                        "initialSupply" : 33000,
                         "supplyMutable" : true,
                         "transferable" : true,
                         "divisibility" : 6
@@ -114,6 +113,10 @@ mongo.connect(function(err, client) {
                 "dt_lastChange": null,
                 "snapshot": {} // the snapshot of the mosaics owned by account
             },
+            "xsnOwners": {
+                "lastBlockMapped":0,
+                "accountsBalances": [] // Holds all XSN owners map table to profits distributions
+            }, 
             "accounts" : [
                 {
                     "dt_cad" : new Date(),
@@ -142,20 +145,20 @@ mongo.connect(function(err, client) {
                 dt_next_change: null,
                 account: {
                     "address" : {
-                        "value" : "TCD2UMS2EGJHB2VQ7UEGUOPVKGNGMZZUGUOFV2KO",
+                        "value" : "",
                         "networkType" : 152
                     },
-                    "publicKey" : "a31629b6b1c878bb387045995b75ce736c68d4ef9c96460982c31cdc67bf26ee"
+                    "publicKey" : ""
                 },
                 candidates: [
                     {
                         "dt_cat" : new Date(),
                         "account" : {
                             "address" : {
-                                "value" : "TCD2UMS2EGJHB2VQ7UEGUOPVKGNGMZZUGUOFV2KO",
+                                "value" : "",
                                 "networkType" : 152
                             },
-                            "publicKey" : "a31629b6b1c878bb387045995b75ce736c68d4ef9c96460982c31cdc67bf26ee"
+                            "publicKey" : ""
                         }
                     }
                 ]

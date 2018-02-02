@@ -1,6 +1,6 @@
 {
   "name": "nem-supernodes-crowdfunding-system",
-  "version": "0.9.2",
+  "version": "0.1.0",
   "description": "NEM Supernodes Crowdfunding System for the NEM Global Hackaton 2018",
   "main": "dist/index.js",
   "scripts": {
@@ -24,6 +24,7 @@
     "incoming": "node dist/payments/incoming.js",
     "outgoing": "node dist/payments/outgoing.js",
     "confirm": "node dist/payments/confirmations.js",
+    "map-xsn": "node dist/payments/map-xsn.js",
     "mongo-test": "node dist/app/install/mongo-test.js",
     "mongo-clean": "node dist/app/install/mongo-clean.js",
     "mongo-install": "node dist/app/install/mongo-install.js"

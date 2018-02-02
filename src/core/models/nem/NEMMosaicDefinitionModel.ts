@@ -1,6 +1,6 @@
 export class NEMMosaicDefinitionModel {
     public data:any;
-    
+
     constructor(data){
         this.data = data;
     }

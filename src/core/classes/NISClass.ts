@@ -3,7 +3,7 @@ import { AccountHttp, BlockHttp, ChainHttp, MosaicHttp, TransactionHttp } from "
 import { BlockchainListener } from "nem-library";
 import {
     Account, Address, TimeWindow, EmptyMessage,  PublicAccount, XEM,
-    Transaction, TransferTransaction, MultisigTransaction, SignedTransaction,
+    Transaction, TransferTransaction, MultisigTransaction, MultisigSignatureTransaction, SignedTransaction,
     MosaicId
 } from "nem-library";
 import {Observable} from "rxjs/Observable";
@@ -28,13 +28,14 @@ export class NISClass {
 
     constructor() {
         if(NISClass._instance){
-            throw new Error("Error: Instantiation failed: Use NISClass.getInstance() instead of new.");
+            throw new Error("Error: Instantiation failed: Use SingletonDemo.getInstance() instead of new.");
         }
         NISClass._instance = this;
     }
 
     public static getInstance():NISClass
     {
+        // console.log("this._config", this._config);
         return NISClass._instance;
     }
 
@@ -199,6 +200,7 @@ export class NISClass {
 
     public createTransferWithMosaics(toAddress, mosaics, message = EmptyMessage):Observable<TransferTransaction>{
         var self = this;
+
         let preparedMosaics = [];
         mosaics.forEach(msc => {
             preparedMosaics.push({
@@ -220,11 +222,19 @@ export class NISClass {
     }
     
 
-    public createMultisign(transferTransaction, multisigAccountPublicKey):any{
+    public createMultisign(transferTransaction, multisigAccountPublicKey):MultisigTransaction {
         return MultisigTransaction.create(
             TimeWindow.createWithDeadline(),
             transferTransaction,
             PublicAccount.createWithPublicKey(multisigAccountPublicKey)
+        );
+    }
+
+    public createMultisignSignatures(multisignTransaction):MultisigSignatureTransaction {
+        return MultisigSignatureTransaction.create(
+            TimeWindow.createWithDeadline(),
+            multisignTransaction.otherTransaction.signer!.address,
+            multisignTransaction.hashData!
         );
     }
 

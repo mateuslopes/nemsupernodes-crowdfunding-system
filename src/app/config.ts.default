@@ -1,7 +1,7 @@
 var config = {
     network: 'testnet',
     supernode: {
-        active: 'nodeId1'
+        active: 'supernodeId'
     },
     nis: {
         enabled: false,
@@ -41,7 +41,8 @@ var config = {
         },
     },
     signersPrivateKeys: {
-        app: ""
+        app: "",
+        admin: ""
     }
 };
 module.exports = config;

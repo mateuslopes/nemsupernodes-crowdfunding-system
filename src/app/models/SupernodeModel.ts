@@ -5,6 +5,7 @@ import {NEMHelpers} from '../../core/models/NEMHelpers';
 import { PaymentModel } from './PaymentModel';
 
 export class SupernodeModel {
+    
 
     public data:any;
 
@@ -81,7 +82,9 @@ export class SupernodeModel {
     }
 
     
-
+    public getAccountObject(){
+        return this._nis.accountCreateWithPrivateKey(this.privateKey);
+    }
 
 
     public incomingBlocksQuery():any {
@@ -95,12 +98,18 @@ export class SupernodeModel {
                 {
                     "transactions.otherTransaction.recipient.value": this.address
                 }
-            ],
+            ]
         };
     }
 
+    
+
+    public get minSignatures():number {
+        return (this.data) ? this.data.signers.minimumSignatures : 1;
+    }
+
     public signaturesFee():number {
-        return this.data.signers.minimumSignatures * this._nis.nemFees.COST_PER_SIGNATURE;
+        return this.minSignatures * this._nis.nemFees.COST_PER_SIGNATURE;
     }
 
     public verifyMosaic(mosaicId):boolean {
@@ -129,9 +138,9 @@ export class SupernodeModel {
     }
 
     public addAccount(account:any, email:string = ''):boolean {
-        let dt_now = new Date();
+        let dt_now = new Date();        
         let found = this.findAcccountByPublicKey(account.publicKey, false);
-        
+
         if (found == -1) {
             this.data.accounts.push({
                 dt_cad: dt_now,
@@ -170,9 +179,8 @@ export class SupernodeModel {
     }
 
     public addRepresentativeCandidate(account:any):boolean {
-        let dt_now = new Date();        
+        let dt_now = new Date();
         let found = this.findRepresentativeCandidatesByPublicKey(account.publicKey, false);
-
         if (found == -1) {
             this.data.representative.candidates.push({
                 dt_cad: dt_now,
@@ -280,6 +288,7 @@ export class SupernodeModel {
 
 
     // prepare a payment to send XSN
+    // public prepareSendXSN(pay, account, xsnOwned){
     public prepareSendXSN(pay){
 
         // Calculates initial fee, amount and returning xem values
@@ -290,7 +299,7 @@ export class SupernodeModel {
             console.log("Not enough XEM for a valid XSN payment response");
             return false;
         }
-
+        
         if (pay.sendXSN(this.mosaicId, xsnAmount, fee)){
             return this.signFromPayment(pay);
         }
@@ -358,6 +367,31 @@ export class SupernodeModel {
     }
 
 
+    public allMosaicTransactions():any {
+        return {
+            "height": { $gte: this.data.mosaic.firstDepositBlock},
+            "transactions": {$not: {$size:0}}, 
+            $or: [
+                {
+                    "transactions._mosaics.mosaicId.namespaceId": this.mosaicId.namespaceId,
+                    "transactions._mosaics.mosaicId.name": this.mosaicId.name
+                    
+                },
+                {
+                    "transactions.otherTransaction._mosaics.mosaicId.namespaceId": this.mosaicId.namespaceId,
+                    "transactions.otherTransaction._mosaics.mosaicId.name": this.mosaicId.name
+                }
+            ]
+        };
+    }
+
+    public allMosaicTransactionsBlocks():any{
+        return this._mongo.c.blocks.find(
+            this.allMosaicTransactions(),
+            {sort:'height'}
+        );
+    }
+
 
 
     public getUnconfirmedPayments():any{
@@ -400,11 +434,15 @@ export class SupernodeModel {
     public loadSupernodeAccount(callback):void{
         
         this.loadPendingPayments((err,pending)=>{
+
             this.loadUnconfirmedPayments((err,unconfirmed)=>{
+
                 // get account balances from nis
                 this._nis.getAccount(this.address).subscribe(accData => {
+
                     // get supernode mosaic owned balances from nis
                     this._nis.getMosaicsOwned(this.address).subscribe(mscData => {
+
                         this.account = new AccountModel(accData, mscData);
                         this.mosaicsOwned = this.account.getMosaicOwned(this.mosaicId);
 
@@ -474,8 +512,8 @@ export class SupernodeModel {
 
             if (this.canUnlock){
               this.changeSupernodeStatus('UNLOCKED', 'processing-pending-payments', (err,payments)=>{
-                console.log("Supernode UNLOCKED");
-                if (callback) callback(err, "Supernode UNLOCKED");
+                console.log("Supernode unlocked");
+                if (callback) callback(err, "Supernode unlocked");
               });
             } else {
                 if (callback) callback(null, false);
@@ -483,8 +521,8 @@ export class SupernodeModel {
         } else if (this.isUnlocked){
             if (this.pending.xem.out == 0 && this.pending.xsn.out == 0){
                 this.changeSupernodeStatus('ACTIVE', 'OK', (err,payments)=>{
-                    console.log("Supernode ACTIVATED!");
-                    if (callback) callback(err, "Supernode ACTIVATED!");
+                    console.log("Supernode activated!");
+                    if (callback) callback(err, "Supernode activated!");
                 });
             } else {
                 if (callback) callback(null, false);

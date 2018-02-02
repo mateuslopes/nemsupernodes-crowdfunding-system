@@ -20,7 +20,6 @@ var appAccount = nis.createCosigner('app');
 var debug = false; 
 var locked = false; // locks inserts and updates
 
-
 // Connect DB
 mongo.connect(function(err, client) {
   
@@ -35,7 +34,7 @@ mongo.connect(function(err, client) {
     // loads supernode account with pending and unconfirmed payments
     supernode.loadSupernodeAccount((err, sn) => {
       assert.equal(null, err);
-
+      
       // Get payments
       var pays = supernode.pending.payments;
       // if supernode is locked, process only mosaics payments
@@ -52,12 +51,11 @@ mongo.connect(function(err, client) {
         return;
       }
 
-      // process just the first #hack // does not need foreach below
+      //
       pays = [pays[0]];
-
       // for each pending payment
       pays.forEach( payment => {
-        
+
         // Replace with the multisig account
         let multisigAccountPublicKey: string = payment.fromPublicKey;
         
@@ -66,7 +64,6 @@ mongo.connect(function(err, client) {
 
         //
         if (payment.isMosaicOut) {
-
           let minXsnBalanceAllowed = 0;
           let authorized = true, status = "OK";
           let xsnAmount = payment.getMosaicQuantity(0);
@@ -76,6 +73,7 @@ mongo.connect(function(err, client) {
           if (supernode.xsnBalance <= (minXsnBalanceAllowed*1)){
             authorized = false;
             status = "insufficient-xsn-funds";
+
             // SEND ALL XEM BACK DISCOUNTING FEES
             payment.resetValues();
             let fee = supernode.calculateXemFee(xemAmount);
@@ -98,7 +96,6 @@ mongo.connect(function(err, client) {
             
             // if still have xsn balance, split the payment in two and send the remaining balance in XSN
             // while scheduling a XEM payment with the change 
-
             let sendXSN = NEMHelpers.roundXem(supernode.xsnBalance - minXsnBalanceAllowed);
             payment.updateMosaicQuantity(0, sendXSN); // todo: verify this multiplier or get it from mosaic definition
 
@@ -111,6 +108,7 @@ mongo.connect(function(err, client) {
             let payBack = payment.duplicate();
             payBack.resetValues();
             let fees = supernode.calculateXemFee(sendXEM)
+            
             let xemFinalFee = supernode.calculateXemFee(sendXEMFee);
             payBack.sendXEM(sendXEMFee, xemFinalFee);
 
@@ -128,7 +126,6 @@ mongo.connect(function(err, client) {
               process.exit();
             }
 
-          // }
           } 
 
           if (authorized){
@@ -137,6 +134,14 @@ mongo.connect(function(err, client) {
             console.log("Unauthorized XSN transaction:", status);
           }
         }
+
+
+
+
+
+
+
+
 
 
 
@@ -161,7 +166,7 @@ mongo.connect(function(err, client) {
               authorized = false;
               status = "supernode-downgrade";
             } else {
-
+              
               let splitPay = supernode.splitXEM(payment, xemAmount, supernode.xemBalance - supernode.minSupernode);
               
               // saves the new payments and ends this process to start it again
@@ -171,7 +176,6 @@ mongo.connect(function(err, client) {
                   "Last XEM payment splitted in one XEM and other XSN payment.",
                   ()=>{process.exit();}
                 );
-                
                 return;
               } else {
                 console.log("Outgoing locked!");
@@ -236,7 +240,6 @@ mongo.connect(function(err, client) {
             }
           }
 
-
           if (authorized){
             transfer = nis.createTransfer(payment.toAddress, payment.xemAmount);
           } else {
@@ -261,7 +264,7 @@ mongo.connect(function(err, client) {
 
         if (transfer){
           transfer.subscribe( transferTransaction => {
-            // console.log("transferTransaction", transferTransaction);
+            
             let multisigTransaction = nis.createMultisign(transferTransaction, payment.fromPublicKey);
             let signedTx = appAccount.signTransaction(multisigTransaction);
 
@@ -276,6 +279,7 @@ mongo.connect(function(err, client) {
                   assert.equal(null, err);
                   console.log("Payment UNCONFIRMED updated!");
                   let updateSupernodeValues = {
+                    // 'payments.lastBlock': highestBlock,
                     'payments.lastDate': new Date()
                   };
                   mongo.c.supernodes.updateOne({nodeId: payment.data.nodeId}, updateSupernodeValues, (err, res) => {

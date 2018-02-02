@@ -56,34 +56,36 @@ mongo.connect(function(err, client) {
         // counts the total processed unconfimed payments
         let countProcessed:number = 0;
         
-        paymentsData = [paymentsData[0]];  
-      // for each of the payments to confirm 
-        paymentsData.forEach( payData => {
-          countProcessed++;
-        
-          // creates a payment model to analyze payment
-          let payment = new PaymentModel(payData);
+        // Observable.from([()=>{
+          paymentsData = [paymentsData[0]];  
+        // for each of the payments to confirm 
+          paymentsData.forEach( payData => {
+            countProcessed++;
+           
+            // creates a payment model to analyze payment
+            let payment = new PaymentModel(payData);
+            
+            // finds all outgoing transactions with the payment hash
+            let filtered = payment.filterAnnouncedTransactions(outgoing);
 
-          // finds all outgoing transactions with the payment hash
-          let filtered = payment.filterAnnouncedTransactions(outgoing);
-
-          if (filtered.length > 0){
-            // if outgoing is found and confirmed
-            if (!locked && filtered[0].isConfirmed()){
-              // confirm it in the database
-              payment.confirmedPayment(
-                filtered[0].getTransactionInfo(), 
-                (err, results) => {
-                  console.log("Payment confirmed!", payment.announcedHash);
+            if (filtered.length > 0){
+              // if outgoing is found and confirmed
+              if (!locked && filtered[0].isConfirmed()){
+                // confirm it in the database
+                payment.confirmedPayment(
+                  filtered[0].getTransactionInfo(), 
+                  (err, results) => {
+                    console.log("Payment confirmed!", payment.announcedHash);
                     mongo.close();
-                });
+                  });
+              }
+            } 
+            else {
+                mongo.close();
             }
-          } 
-          else {
-              mongo.close();
-          }
-        });
-        
+            
+          });
+
       }, err => {
         console.log("Error fetching outgoing transactions from NIS.");
         mongo.close();

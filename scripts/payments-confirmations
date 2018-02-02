@@ -3,5 +3,5 @@
 while [ true ]; 
 do
  node ../dist/payments/confirmations.js
- sleep 10
+ sleep 15
 done

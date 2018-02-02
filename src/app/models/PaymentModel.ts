@@ -9,7 +9,6 @@ var lodash = require('lodash');
 export class PaymentModel {
     
     private _mongo = require('../../core/mongowrap');
-    
     public data:any; // payment data
     public tx:any; // transaction
 

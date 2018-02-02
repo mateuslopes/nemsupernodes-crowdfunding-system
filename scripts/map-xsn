@@ -2,6 +2,6 @@
 # runs the chain script every 30 seconds
 while [ true ]; 
 do
- node ../dist/payments/outgoing.js
- sleep 20
+ node ../dist/payments/map-xsn.js
+ sleep 120
 done

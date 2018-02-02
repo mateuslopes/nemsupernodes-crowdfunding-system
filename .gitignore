@@ -4,3 +4,4 @@ dist
 npm-debug.*
 src/app/config.ts
 .vscode
+.DS_Store

@@ -33,4 +33,14 @@ export class NEMBlockModel {
         );
     }
 
+    // filters txs by the mosaicId
+    public filterTxByMosaic(mosaicId, returnData = false){
+        return this.data.transactions.filter(
+            tx => {
+                let txm = new NEMTransactionModel(tx);
+                return (txm.hasMosaic(mosaicId))
+            }
+        );
+    }
+
 }

@@ -38,7 +38,7 @@ Announces each payment to the supernode account, splits transactions if needed, 
 ### bash payments-confirmations
 Confirms outgoing payments that were waiting to be signed
 
-### TODO: bash map-accounts-xsn
+### bash map-xsn
 Map all the accounts holding XSN to distribute profits and for community representative decision.
 
 ### TODO: bash payments-profits-distribution
